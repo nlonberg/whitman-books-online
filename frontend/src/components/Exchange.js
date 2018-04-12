@@ -10,7 +10,13 @@ class Exchange extends Component {
     super(props);
     this.state = {
       searchValue: '',
+      sortValue: 1,
     };
+  }
+
+  handleChange = (event, index, value) => {
+    this.setState({sortValue: value});
+    console.log(this.state.sortValue);
   }
 
   render() {
@@ -19,7 +25,7 @@ class Exchange extends Component {
         <h1>Exchange</h1>
 
         <SearchBar
-          value={this.state.value}
+          value={this.state.searchValue}
           onChange={(newValue) => this.setState({ searchValue: newValue })}
           onRequestSearch={() => console.log(this.state.searchValue)}
           style={{
@@ -31,8 +37,8 @@ class Exchange extends Component {
         <div>
           <SelectField
             floatingLabelText="Sort By"
-            value={this.state.value}
-            onChange={(value) => this.setState({value})}
+            value={this.state.sortValue}
+            onChange={this.handleChange}
             >
             <MenuItem value={1} primaryText="Price: Low to High" />
             <MenuItem value={2} primaryText="Price: High to Low" />
