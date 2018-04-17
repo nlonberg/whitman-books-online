@@ -3,6 +3,7 @@ import Page from './Page';
 import BookFeed from './BookFeed';
 import Search from './Search';
 import SortField from './SortField';
+import Filters from './Filters'
 
 class Exchange extends Component {
 
@@ -11,6 +12,8 @@ class Exchange extends Component {
       <Page>
         <h1>Exchange</h1>
         <Search/>
+        <br />
+        <Filters/>
         <SortField/>
         <BookFeed query={{}} />
       </Page>

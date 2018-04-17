@@ -4,13 +4,37 @@ import MenuItem from 'material-ui/MenuItem';
 import { Redirect, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { changeSortValue, changeSortValueFail } from '../redux/sortField/actions';
+import { changeSort, changeSortFail } from '../redux/search/actions';
 
   class SortField extends Component{
 
     handleChange = (event, index, value) => {
-      this.props.changeSortValue(value);
-      console.log(this.state.sortValue);
+      if (value != this.props.listings.sort) {
+        this.props.changeSort(value);
+        /*
+        fetch('https://localhost:3000/', {
+          method: 'GET',
+        }).then((response) => {
+          const responseJson = response.json();
+          responseJson = responseJson + "+"+this.props.listings.sort
+          +"+"+this.props.listings.price+"+"+this.props.listings.condition;
+          return responseJson;
+        }).then((responseJson) => {
+          this.setState({ responseJson });
+        }).catch((err) => {
+          console.log(err);
+      });
+    */
+        console.log("131,343,124,122"+ "+"+this.props.listings.sort
+    +"+"+this.props.listings.price+"+"+this.props.listings.condition);
+      }
+      else {
+        this.props.changeSortFail(value);
+      }
+    }
+
+    handleSearch = (event) =>{
+      
     }
 
     render(){
@@ -19,13 +43,11 @@ import { changeSortValue, changeSortValueFail } from '../redux/sortField/actions
         <div>
           <SelectField
             floatingLabelText="Sort By"
-            value={this.props.sortValue}
+            value={this.props.listings.sort}
             onChange={this.handleChange}
             >
-            <MenuItem value={1} primaryText="Price: Low to High" />
-            <MenuItem value={2} primaryText="Price: High to Low" />
-            <MenuItem value={3} primaryText="Condition: New to Poor" />
-            <MenuItem value={4} primaryText="Condition: Poor to New" />
+            <MenuItem value={"price"} primaryText="Price"/>
+            <MenuItem value={"condition"} primaryText="Condition" />
           </SelectField>
         </div>
       );
@@ -33,11 +55,11 @@ import { changeSortValue, changeSortValueFail } from '../redux/sortField/actions
   }
 
   const mapStateToProps = (state) => {
-    const sortValue = state.sortfieldReducer;
-    return sortValue;
+    const listings = state.searchReducer;
+    return listings;
   };
 
   const mapDispatchToProps = dispatch =>
-  bindActionCreators({ changeSortValue, changeSortValueFail }, dispatch);
+  bindActionCreators({ changeSort, changeSortFail }, dispatch);
 
     export default withRouter(connect(mapStateToProps, mapDispatchToProps)(SortField));
