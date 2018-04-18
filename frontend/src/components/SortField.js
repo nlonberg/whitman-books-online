@@ -9,24 +9,37 @@ import { changeSort, changeSortFail } from '../redux/search/actions';
   class SortField extends Component{
 
     handleChange = (event, index, value) => {
+
+      //This is kind of embarrassing design and definitely in need of refactor at some point
       if (value != this.props.listings.sort) {
         this.props.changeSort(value);
-        /*
-        fetch('https://localhost:3000/', {
-          method: 'GET',
-        }).then((response) => {
-          const responseJson = response.json();
-          responseJson = responseJson + "+"+this.props.listings.sort
-          +"+"+this.props.listings.price+"+"+this.props.listings.condition;
-          return responseJson;
-        }).then((responseJson) => {
-          this.setState({ responseJson });
-        }).catch((err) => {
-          console.log(err);
-      });
-    */
-        console.log("131,343,124,122"+ "+"+this.props.listings.sort
-    +"+"+this.props.listings.price+"+"+this.props.listings.condition);
+
+        //first GET request to get listing objects from listings_ids and a sortfield
+        var urlDest = 'https://whitmanbooksonline.com/listings/' + this.props.listings.ids + "+" + value;
+        var requestIds = new XMLHttpRequest ();
+        requestIds.open('GET', urlDest);
+        requestIds.responseType = "json";
+        var listingObjs;
+        requestIds.onload = function() {
+          listingObjs = requestIds.response;
+        }
+
+        //parse listing objects for a list of google tokens
+        var google_tokens = "";
+        for (var i=0; i<listingObjs["google_tokens"].length; i++){
+          google_tokens = google_tokens + listingObjs["google_tokens"][i] +",";
+        }
+        google_tokens = google_tokens.slice(-1);
+        console.log(google_tokens);
+
+        //third GET request using google tokens to get user objects
+        urlDest = "https://whitmanbooksonline.com/userlist/"+google_tokens;
+        var requestUsers = new XMLHttpRequest ();
+        requestUsers.open('GET', urlDest);
+        requestUsers.responseType = "json";
+        requestUsers.onload = function() {
+          var userObjs = requestUsers.response;
+        }
       }
       else {
         this.props.changeSortFail(value);

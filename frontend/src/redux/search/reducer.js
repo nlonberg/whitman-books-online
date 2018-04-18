@@ -5,6 +5,7 @@ const initialState = {
     length: 20,
   },
   listings: {
+    ids: '',
     price: '',
     condition: "",
     sort: "price",
@@ -16,6 +17,18 @@ const initialState = {
 export default (state = initialState, action) => {
   const { payload, type} = action;
   switch (type) {
+    case 'CHANGE_IDS':
+    return{
+      ...state,
+      listings: {
+        ...state.listings,
+        ids: payload.ids,
+      }
+    };
+    case 'CHANGE_IDS_FAIL':
+    return{
+      ...state,
+    };
     case 'CHANGE_LISTING_PRICE':
     return {
       ...state,

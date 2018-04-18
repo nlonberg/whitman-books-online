@@ -38,22 +38,8 @@ const styles = {
   	}
 
   	handleSearch = (event) => {
-  		/*
-		fetch('https://localhost:3000/', {
-		      method: 'GET',
-		    }).then((response) => {
-		      responseJson = response.json();
-		      responseJson = responseJson + "+"+this.props.listings.sort
-		      +"+"+this.props.listings.price+"+"+this.props.listings.condition;
-		      return responseJson;
-		    }).then((responseJson) => {
-		      this.setState({ responseJson });
-		    }).catch((err) => {
-		      console.log(err);
-	    });
-		*/
-	    console.log("131,343,124,122"+ "+"+this.props.listings.sort
-		+"+"+this.props.listings.price+"+"+this.props.listings.condition);
+
+  		//If backend ever supports filters then the GET requests will be implemented here
 	    
     }
 
@@ -66,7 +52,7 @@ const styles = {
                 showExpandableButton
             />
   		  	<CardText expandable>
-  		  	<div classname = "Condition-Filter">
+  		  	<div className = "Condition-Filter">
 		  		<SelectField
 	              value={this.props.listings.condition}
 	              onChange={this.handleConditionChange}
@@ -79,7 +65,7 @@ const styles = {
 	            </SelectField>
         	</div>
 
-            <div classname = "Price-Filter">
+            <div className = "Price-Filter">
             	$
 	            <TextField
 	              floatingLabelText="Input maximum price:"

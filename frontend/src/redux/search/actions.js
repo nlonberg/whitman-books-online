@@ -91,3 +91,18 @@ export function changeSortFail(sort) {
     type: 'CHANGE_SORT_FAIL',
   };
 }
+
+export function changeIds(ids) {
+  return {
+    type: 'CHANGE_IDS',
+    payload:{
+      ids,
+    }
+  };
+}
+
+export function changeIdsFail(ids) {
+  return {
+    type: 'CHANGE_IDS_FAIL'
+  };
+}
