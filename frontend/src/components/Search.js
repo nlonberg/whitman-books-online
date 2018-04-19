@@ -74,6 +74,20 @@ import { changePrice, changePriceFail, changeCondition, changeConditionFail,
       }
       //Alright, now I have bookObjs, listingObjs, and userObjs. What do I do with them?
     }
+
+    render(){
+        return(
+          <SearchBar
+          value={this.props.books.searchValue}
+          onChange={(newValue) => this.props.changeSearchValue(newValue)}
+          onRequestSearch = {this.handleSearch}
+          style={{
+            margin: '0 auto',
+            maxWidth: 800,
+          }}
+          />
+        );
+      }
   }
 
   const mapStateToProps = (state) => {
