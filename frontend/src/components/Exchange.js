@@ -13,7 +13,6 @@ class Exchange extends Component {
         <h1>Exchange</h1>
         <Search/>
         <br />
-        <Filters/>
         <SortField/>
         <BookFeed query={{}} />
       </Page>

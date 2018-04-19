@@ -7,8 +7,8 @@ import {Link} from 'react-router-dom';
 import './Navigation.css';
 
 const profileIcon = <FontIcon className="material-icons">face</FontIcon>;
-const marketIcon = <FontIcon className="material-icons">library_books</FontIcon>;
-const sellIcon = <FontIcon className="material-icons">library_add</FontIcon>;
+const marketIcon = <FontIcon className="material-icons">home</FontIcon>;
+const sellIcon = <FontIcon className="material-icons">add</FontIcon>;
 
 class Navigation extends Component { 
 

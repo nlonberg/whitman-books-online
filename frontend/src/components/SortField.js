@@ -14,8 +14,11 @@ import { changeSort, changeSortFail } from '../redux/search/actions';
       if (value != this.props.listings.sort) {
         this.props.changeSort(value);
 
+        var dest_base = this.props.listings.urlDest;
+        //var dest_base = `http://127.0.0.1:5000/`;
+
         //first GET request to get listing objects from listings_ids and a sortfield
-        var urlDest = 'https://whitmanbooksonline.com/listings/' + this.props.listings.ids + "+" + value;
+        var urlDest = dest_base + 'listings/' + this.props.listings.ids + "+" + value;
         var requestIds = new XMLHttpRequest ();
         requestIds.open('GET', urlDest);
         requestIds.responseType = "json";
@@ -33,13 +36,14 @@ import { changeSort, changeSortFail } from '../redux/search/actions';
         console.log(google_tokens);
 
         //third GET request using google tokens to get user objects
-        urlDest = "https://whitmanbooksonline.com/userlist/"+google_tokens;
+        urlDest = dest_base + "userlist/"+google_tokens;
         var requestUsers = new XMLHttpRequest ();
         requestUsers.open('GET', urlDest);
         requestUsers.responseType = "json";
         requestUsers.onload = function() {
           var userObjs = requestUsers.response;
         }
+
       }
       else {
         this.props.changeSortFail(value);

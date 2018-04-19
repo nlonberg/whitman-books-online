@@ -37,12 +37,6 @@ const styles = {
   		this.props.changeCondition(value);
   	}
 
-  	handleSearch = (event) => {
-
-  		//If backend ever supports filters then the GET requests will be implemented here
-	    
-    }
-
   	render() {
   		return (
   		  <Card >
@@ -79,7 +73,6 @@ const styles = {
 	        <FlatButton
               primary
               label="SEARCH"
-              onClick = {this.handleSearch}
             />
 	        </div>
 	    	</CardText>

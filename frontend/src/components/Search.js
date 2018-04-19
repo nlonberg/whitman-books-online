@@ -13,10 +13,13 @@ import { changePrice, changePriceFail, changeCondition, changeConditionFail,
 
     handleSearch = (event) => {
 
+      var dest_base = this.props.listings.urlDest;
+      //var dest_base = `http://127.0.0.1:5000/`;
+
       //first get request using searchValue to get book objects
       const searchString = this.props.books.searchValue.trim().toLowerCase().replace(/ /g,"_");
       console.log(searchString);
-      var urlDest = 'https://whitmanbooksonline.com/booklist/' + searchString;
+      var urlDest = dest_base + 'booklist/' + searchString;
       var requestBooks = new XMLHttpRequest ();
       requestBooks.open('GET', urlDest);
       requestBooks.responseType = "json";
@@ -25,6 +28,8 @@ import { changePrice, changePriceFail, changeCondition, changeConditionFail,
       requestBooks.onload = function() {
         bookObjs = requestBooks.response;
       }
+
+      console.log(bookObjs);
 
       //parse book objects for a list of listing ids
       var listing_ids = "";
@@ -41,7 +46,7 @@ import { changePrice, changePriceFail, changeCondition, changeConditionFail,
       console.log(listing_ids);
 
       //second GET request using listing ids and a sort value to get listing objects
-      urlDest = 'https://whitmanbooksonline.com/listings/' + listing_ids + "+" + this.props.listings.sort;
+      urlDest = dest_base + 'listings/' + listing_ids + "+" + this.props.listings.sort;
       var requestIds = new XMLHttpRequest ();
       requestIds.open('GET', urlDest);
       requestIds.responseType = "json";
@@ -59,7 +64,7 @@ import { changePrice, changePriceFail, changeCondition, changeConditionFail,
       console.log(google_tokens);
 
       //third GET request using google tokens to get user objects
-      urlDest = "https://whitmanbooksonline.com/userlist/"+google_tokens;
+      urlDest = dest_base + "userlist/"+google_tokens;
       var requestUsers = new XMLHttpRequest ();
       requestUsers.open('GET', urlDest);
       requestUsers.responseType = "json";
@@ -67,7 +72,6 @@ import { changePrice, changePriceFail, changeCondition, changeConditionFail,
       requestUsers.onload = function() {
         userObjs = requestUsers.response;
       }
-
       //Alright, now I have bookObjs, listingObjs, and userObjs. What do I do with them?
     }
   }
