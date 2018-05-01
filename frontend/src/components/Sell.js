@@ -74,12 +74,12 @@ class Sell extends Component {
     }
   }
 
+
   handleIsbnClick = (e) => {
     e.preventDefault();
     this.setState({ loading: true });
     isbn.resolve(this.state.isbnValue, (err, book) => {
       if (err) {
-        console.log('Book not found', err);
         this.setState({
           loading: false,
         });
@@ -92,43 +92,52 @@ class Sell extends Component {
     });
   }
 
+  handleIsbnEnterKey = (e) => {
+    // console.log(`Pressed keyCode ${ev.key}`);
+    if (e.key === 'Enter' && this.state.isbnButtonDisabled === false) {
+      this.handleIsbnClick(e);
+    }
+  }
+
+  handlePriceEnterKey = (e) => {
+    if (e.key === 'Enter' && this.state.priceButtonDisabled === false) {
+      this.handleSubmitClick(e);
+    }
+  }
+
+
   handleSubmitClick = (e) => {
     e.preventDefault();
     //BOOK TO BACKEND
     //${this.state.book.industryIdentifiers[0].identifier}
-    console.log(this.state.book);
-    var requestURL = `http://127.0.0.1:5000/book/${this.state.isbnValue}`;
-    var request = new XMLHttpRequest();
+    const requestURL = `http://127.0.0.1:5000/book/${this.state.isbnValue}`;
+    const request = new XMLHttpRequest();
     request.open('POST', requestURL);
     request.responseType = "json";
-    request.setRequestHeader("Content-Type","application/json");
+    request.setRequestHeader("Content-Type", "application/json");
     request.send(JSON.stringify(this.state.book));
     request.onload = function () {
-      var bookData = request.response;
-      console.log(bookData["message"])
+      const bookData = request.response;
     }
 
     //LISTING TO BACKEND
-
-    //var requestURL2 = `http://127.0.0.1:5000/listing/this.state.book.industryIdentifiers[0].identifier`;
-    //var request2 = new XMLHttpRequest();
-    //request2.open('POST', requestURL2);
-    //request2.responseType = "json";
-    //request2.setRequestHeader("Content-Type","application/json");
-    //request2.send(JSON.stringify({
-    //  price: parseFloat(this.state.price),
-    //  condition: this.state.condition,
-    //  status: "selling",
-    //  google_tok: this.props.googleId,
-    //}));
-    //request2.onload = function () {
-    //  var listingData = request2.reponse;
+    const i = this.state.book.industryIdentifiers.length - 1;
+    const requestURL2 = `http://127.0.0.1:5000/listing/${this.state.book.industryIdentifiers[i].identifier}`;
+    const request2 = new XMLHttpRequest();
+    request2.open('POST', requestURL2);
+    request2.responseType = "json";
+    request2.setRequestHeader("Content-Type", "application/json");
+    const body = JSON.stringify({
+      price: parseFloat(this.state.price),
+      condition: this.state.condition,
+      status: "selling",
+      google_tok: this.props.googleId,
+    });
+    request2.send(body);
+    request2.onload = function () {
+      const listingData = request2.reponse;
     }
-
-
-
-
-
+  }
 
   render() {
     const { loading, book } = this.state;
@@ -141,6 +150,7 @@ class Sell extends Component {
           value={this.state.isbnValue}
           errorText={this.state.isbnError}
           onChange={this.handleIsbnChange}
+          onKeyPress={this.handleIsbnEnterKey}
           errorStyle={{
             float: 'left',
           }}
@@ -196,6 +206,7 @@ class Sell extends Component {
               floatingLabelText="Input your desired price:"
               value={this.state.price}
               onChange={this.handlePriceChange}
+              onKeyPress={this.handlePriceEnterKey}
               errorText={this.state.priceError}
               errorStyle={{
                 float: 'left',
@@ -216,7 +227,7 @@ class Sell extends Component {
 
 const mapStateToProps = (state) => {
   const { googleId } = state.authReducer.profileObj;
-  return {googleId};
+  return { googleId };
 };
 
 export default withRouter(connect(mapStateToProps)(Sell));

@@ -1,5 +1,5 @@
 const initialState = {
-  listingList: {},
+  listingList: [],
   loading: false,
 };
 
@@ -21,10 +21,15 @@ export default (state = initialState, action) => {
     case 'GET_LISTING_LIST_SUCCESS':
       return {
         ...state,
-        listingList: {
+        listingList: [
           ...state.listingList,
           ...payload.listingList,
-        },
+        ],
+      };
+    case 'DELETE_LISTING_SUCCESS':
+      return {
+        ...state,
+        listingList: state.listingList.filter(item => item.listing_id !== payload.listingId),
       };
     case 'GET_LISTING_LIST_FAIL':
       return {

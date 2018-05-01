@@ -1,6 +1,8 @@
 import sampleData from '../sampleData';
-
+import { getUserList } from '../users/actions';
 const { LISTING_DATA } = sampleData;
+const LISTINGS_ENDPOINT = 'http://127.0.0.1:5000/listings/';
+const LISTING_ENDPOINT = 'http://127.0.0.1:5000/listing/';
 
 export function getListingSuccess(listingId, listing) {
   return {
@@ -27,6 +29,15 @@ export function getListingListSuccess(listingList) {
   };
 }
 
+export function deleteListingSuccess(listingId) {
+  return {
+    type: 'DELETE_LISTING_SUCCESS',
+    payload: {
+      listingId,
+    },
+  };
+}
+
 export function getListingListFail() {
   return {
     type: 'GET_LISTING_LIST_FAIL',
@@ -39,6 +50,19 @@ export function loadListingList(boolean) {
     payload: {
       boolean,
     },
+  };
+}
+
+export function deleteListing(listingId) {
+  return (dispatch) => {
+    const urlDest = `${LISTING_ENDPOINT}${listingId}`;
+    const requestIds = new XMLHttpRequest();
+    requestIds.open('DELETE', urlDest);
+    requestIds.responseType = "json";
+    requestIds.send(urlDest);
+    requestIds.onload = () => {
+      dispatch(deleteListingSuccess(listingId));
+    };
   };
 }
 
@@ -85,9 +109,37 @@ export function fetchListingList(query) {
   };
 }
 
-export function getListingList(query) {
+export function getUserListingList(listingIds) {
   return (dispatch) => {
-    dispatch(loadListingList(true));
-    dispatch(fetchListingList(query));
+    const urlDest = `${LISTING_ENDPOINT}${listingIds}`;
+    const requestIds = new XMLHttpRequest();
+    requestIds.open('GET', urlDest);
+    requestIds.responseType = "json";
+    requestIds.send(urlDest);
+    requestIds.onload = () => {
+      const listingObjs = requestIds.response;
+      const listingList = listingObjs.listings;
+      dispatch(getListingListSuccess(listingList));
+    };
+  };
+}
+
+
+export function getListingList(listingIds) {
+  return (dispatch, getState) => {
+    const state = getState();
+    const { sort } = state.searchReducer.listings;
+    const urlDest = `${LISTINGS_ENDPOINT}${listingIds}+${sort}`;
+    const requestIds = new XMLHttpRequest();
+    requestIds.open('GET', urlDest);
+    requestIds.responseType = "json";
+    requestIds.send(urlDest);
+    requestIds.onload = () => {
+      const listingObjs = requestIds.response;
+      const listingList = listingObjs.listings;
+      const userIds = listingObjs.google_tokens;
+      dispatch(getListingListSuccess(listingList));
+      dispatch(getUserList(userIds));
+    };
   };
 }

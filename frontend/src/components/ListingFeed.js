@@ -6,21 +6,23 @@ import Feed from './Feed';
 import ListingItem from './ListingItem';
 import { getListingList } from '../redux/listings/actions';
 import { makeGetListingListByIds } from '../redux/listings/selectors';
-import sampleData from '../redux/sampleData';
 
 class ListingFeed extends Component {
   componentDidMount() {
-    const { getListingList, listingIds } = this.props;
-    getListingList({ listingIds });
+    const { getListingList, listingIds, listingList } = this.props;
+    if (!Object.keys(listingList).length) {
+      getListingList(listingIds);
+    }
   }
 
   render() {
-    const { listingList } = this.props;
+    console.log(this.props);
+    const { listingList, showTitle } = this.props;
     const loading = !Object.keys(listingList).length;
 
     return (
       <div>
-        <Feed loading={loading} feedList={listingList} FeedItem={ListingItem} />
+        <Feed showTitle={showTitle} loading={loading} feedList={listingList} FeedItem={ListingItem} />
       </div>
     );
   }
